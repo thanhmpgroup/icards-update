@@ -1,0 +1,229 @@
+/* ==========================================================================
+   Giao diện chung trang quản trị iCards (nạp SAU AdminDashboard.css).
+   Chỉ đổi màu, khoảng cách, bo góc, chữ; không đổi bố cục riêng của từng trang.
+   Màu thương hiệu #27548A (theme-color trong manifest).
+   ========================================================================== */
+:root {
+    --ad-bg: #F3F5F9;
+    --ad-surface: #FFFFFF;
+    --ad-border: #E2E7EF;
+    --ad-border-strong: #CBD3DF;
+    --ad-text: #1B2433;
+    --ad-muted: #66738A;
+    --ad-brand: #27548A;
+    --ad-brand-600: #1E4370;
+    --ad-brand-50: #EAF0F8;
+    --ad-side: #0F1D30;
+    --ad-side-2: #172A43;
+    --ad-side-text: #C5D0E0;
+    --ad-side-muted: #7D8CA3;
+    --ad-danger: #C2392E;
+    --ad-radius: 12px;
+    --ad-shadow-sm: 0 1px 2px rgba(16, 30, 54, .05);
+    --ad-shadow-md: 0 12px 32px rgba(16, 30, 54, .10);
+    /* Biến cũ, cho các trang còn dùng */
+    --admin-blue: #27548A;
+    --admin-sidebar-active: #27548A;
+    --admin-border-color: #E2E7EF;
+    --admin-text-primary: #1B2433;
+    --admin-text-secondary: #66738A;
+    --admin-shadow: 0 1px 2px rgba(16, 30, 54, .05);
+}
+
+/* --- Bố cục --- */
+.admin-layout {
+    grid-template-columns: 252px minmax(0, 1fr);
+    height: 100vh;
+    background: var(--ad-bg);
+    color: var(--ad-text);
+}
+.admin-layout.sidebar-collapsed { grid-template-columns: 72px minmax(0, 1fr); }
+.admin-layout .main-content { background: var(--ad-bg); min-width: 0; }
+.admin-layout .main-content__page { padding: 24px 28px 40px; }
+
+/* --- Menu trái --- */
+.admin-layout .sidebar {
+    background: linear-gradient(180deg, var(--ad-side) 0%, #0C1828 100%);
+    color: var(--ad-side-text);
+    border-right: 1px solid rgba(255, 255, 255, .04);
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, .15) transparent;
+}
+.admin-layout .sidebar .sidebar-header {
+    height: 64px;
+    justify-content: flex-start;
+    gap: 10px;
+    padding: 0 18px;
+    border-bottom: 1px solid rgba(255, 255, 255, .06);
+    font-size: 17px;
+    flex-shrink: 0;
+}
+.admin-layout .sidebar-brand__mark {
+    width: 34px; height: 34px; flex-shrink: 0;
+    display: grid; place-items: center;
+    border-radius: 10px;
+    background: var(--ad-brand);
+    color: #fff;
+    font-size: 14px; font-weight: 700; letter-spacing: .02em;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .18);
+}
+.admin-layout .sidebar .logo-text { display: grid; line-height: 1.15; color: #fff; font-weight: 700; }
+.admin-layout .sidebar .logo-text small { font-size: 11px; font-weight: 500; color: var(--ad-side-muted); letter-spacing: .04em; }
+.admin-layout .sidebar.collapsed .sidebar-header { justify-content: center; padding: 0; }
+.admin-layout .sidebar.collapsed .logo-text { display: none; }
+
+.admin-layout .sidebar__nav { padding: 12px 12px 8px; flex-grow: 1; }
+.admin-layout .sidebar__section + .sidebar__section { margin-top: 14px; }
+.admin-layout .sidebar.collapsed .sidebar__section + .sidebar__section { margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(255, 255, 255, .06); }
+.admin-layout .sidebar__section-title {
+    margin: 0 0 6px; padding: 0 10px;
+    font-size: 10.5px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--ad-side-muted);
+}
+.admin-layout .sidebar__nav-link {
+    position: relative;
+    gap: 11px;
+    padding: 9px 10px;
+    margin-bottom: 2px;
+    border-radius: 9px;
+    color: var(--ad-side-text);
+    font-size: 14px; font-weight: 500;
+    text-decoration: none;
+    transition: background-color .15s, color .15s;
+}
+.admin-layout .sidebar__nav-link:hover { background: rgba(255, 255, 255, .06); color: #fff; }
+.admin-layout .sidebar__nav-link.active { background: rgba(80, 135, 205, .2); color: #fff; font-weight: 600; }
+.admin-layout .sidebar__nav-link.active::before {
+    content: ""; position: absolute; left: -12px; top: 8px; bottom: 8px; width: 3px;
+    border-radius: 0 3px 3px 0; background: #6FA3E6;
+}
+.admin-layout .sidebar__nav-link.active .sidebar__nav-icon { color: #8FBBF2; }
+.admin-layout .sidebar__nav-icon { margin-right: 0; display: inline-flex; color: var(--ad-side-muted); }
+.admin-layout .sidebar__nav-link:hover .sidebar__nav-icon { color: #fff; }
+.admin-layout .sidebar.collapsed .sidebar__nav-link { justify-content: center; padding: 10px 0; }
+.admin-layout .sidebar-footer { padding: 8px 12px 12px; border-top: 1px solid rgba(255, 255, 255, .06); margin-top: auto; }
+.admin-layout .sidebar-footer .logout-btn { width: 100%; margin: 4px 0 8px; color: var(--ad-side-text); border: 0; background: transparent; }
+.admin-layout .sidebar-footer .logout-btn:hover { background: rgba(194, 57, 46, .18); color: #FFD2CD; }
+.admin-layout .sidebar-toggle-wrapper { padding: 0; border-top: 0; margin-top: 0; }
+.admin-layout .sidebar-toggle { padding: 8px; border-radius: 9px; background: rgba(255, 255, 255, .06); color: var(--ad-side-text); }
+.admin-layout .sidebar-toggle:hover { background: rgba(255, 255, 255, .12); color: #fff; }
+
+/* --- Thanh trên --- */
+.admin-topbar {
+    position: sticky; top: 0; z-index: 30;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    min-height: 64px; padding: 0 28px;
+    background: rgba(255, 255, 255, .92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--ad-border);
+    flex-shrink: 0;
+}
+.admin-topbar__crumbs { display: flex; align-items: center; gap: 8px; min-width: 0; font-size: 13.5px; color: var(--ad-muted); white-space: nowrap; overflow: hidden; }
+.admin-topbar__crumbs b { color: var(--ad-text); font-weight: 600; overflow: hidden; text-overflow: ellipsis; }
+.admin-topbar__sep { color: var(--ad-border-strong); }
+.admin-topbar__actions { display: flex; align-items: center; gap: 14px; flex-shrink: 0; }
+.admin-topbar__link {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 8px 12px; border-radius: 9px;
+    border: 1px solid var(--ad-border);
+    color: var(--ad-text); font-size: 13px; font-weight: 500; text-decoration: none;
+}
+.admin-topbar__link:hover { border-color: var(--ad-brand); color: var(--ad-brand); }
+.admin-topbar__user { display: flex; align-items: center; gap: 10px; padding-left: 14px; border-left: 1px solid var(--ad-border); }
+.admin-topbar__avatar { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; background: var(--ad-brand); color: #fff; font-size: 13px; font-weight: 700; }
+.admin-topbar__who { display: grid; line-height: 1.25; }
+.admin-topbar__who b { font-size: 13.5px; font-weight: 600; color: var(--ad-text); }
+.admin-topbar__who small { font-size: 12px; color: var(--ad-muted); }
+@media (max-width: 760px) {
+    .admin-topbar { padding: 0 16px; }
+    .admin-topbar__who, .admin-topbar__link span { display: none; }
+    .admin-layout .main-content__page { padding: 18px 16px 32px; }
+}
+
+/* --- Tiêu đề trang (mỗi trang tự vẽ .admin-header) --- */
+.admin-layout .admin-header {
+    background: transparent; box-shadow: none; border: 0;
+    padding: 0 0 4px;
+}
+.admin-layout .admin-header__title { font-size: 24px; font-weight: 700; color: var(--ad-text); letter-spacing: -.01em; }
+
+/* --- Thẻ, bảng --- */
+.admin-layout .card {
+    background: var(--ad-surface);
+    border: 1px solid var(--ad-border);
+    border-radius: var(--ad-radius);
+    box-shadow: var(--ad-shadow-sm);
+}
+.admin-layout .card__title { font-size: 16px; font-weight: 700; color: var(--ad-text); }
+.admin-layout .table-container {
+    background: var(--ad-surface);
+    border: 1px solid var(--ad-border);
+    border-radius: var(--ad-radius);
+    box-shadow: var(--ad-shadow-sm);
+}
+.admin-layout .table { font-size: 14px; color: var(--ad-text); }
+.admin-layout .table thead { background: #F7F9FC; border-bottom: 1px solid var(--ad-border); }
+.admin-layout .table th {
+    font-size: 11.5px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase;
+    color: var(--ad-muted); padding: 12px 16px;
+}
+.admin-layout .table td { padding: 12px 16px; }
+.admin-layout .table tbody tr { border-bottom: 1px solid #EDF0F5; }
+.admin-layout .table tbody tr:hover { background: #F8FAFD; }
+.admin-layout .table__actions .edit-btn { color: var(--ad-brand); }
+
+/* --- Nút --- */
+.admin-layout .btn, .modal-overlay .btn {
+    gap: 6px;
+    min-height: 38px;
+    padding: 8px 16px;
+    border-radius: 9px;
+    font-size: 14px; font-weight: 600;
+    line-height: 1.2;
+    text-transform: none;
+    letter-spacing: normal;
+}
+.admin-layout .btn svg, .modal-overlay .btn svg { margin-right: 0; }
+.admin-layout .btn-primary, .modal-overlay .btn-primary { background: var(--ad-brand); border-color: var(--ad-brand); color: #fff; }
+.admin-layout .btn-primary:hover, .modal-overlay .btn-primary:hover { background: var(--ad-brand-600); opacity: 1; }
+.admin-layout .btn-secondary, .modal-overlay .btn-secondary { background: var(--ad-surface); border: 1px solid var(--ad-border-strong); color: var(--ad-text); }
+.admin-layout .btn-secondary:hover, .modal-overlay .btn-secondary:hover { border-color: var(--ad-brand); color: var(--ad-brand); background: var(--ad-brand-50); }
+.admin-layout .btn-danger, .modal-overlay .btn-danger { background: var(--ad-danger); border-color: var(--ad-danger); color: #fff; }
+.admin-layout .btn:disabled, .modal-overlay .btn:disabled { opacity: .55; cursor: not-allowed; }
+.admin-layout .btn:focus-visible, .modal-overlay .btn:focus-visible { outline: 2px solid #8FBBF2; outline-offset: 2px; }
+
+/* --- Ô nhập --- */
+.admin-layout .form-label, .modal-overlay .form-label { font-size: 13px; font-weight: 600; color: var(--ad-text) !important; }
+.admin-layout .form-control, .modal-overlay .form-control {
+    border: 1px solid var(--ad-border-strong);
+    border-radius: 9px;
+    font-size: 14px;
+    padding: 9px 12px;
+    background-color: #fff;
+    color: var(--ad-text);
+}
+.admin-layout .search-box .form-control { padding-left: 38px; }
+.admin-layout .form-control:focus, .modal-overlay .form-control:focus {
+    border-color: var(--ad-brand);
+    box-shadow: 0 0 0 3px rgba(39, 84, 138, .15);
+}
+
+/* --- Hộp thoại --- */
+.modal-overlay { background: rgba(15, 25, 42, .55); backdrop-filter: blur(2px); }
+.modal-overlay .modal-content { border-radius: 16px; box-shadow: 0 24px 60px rgba(10, 20, 40, .25); border: 1px solid var(--ad-border); }
+.modal-overlay .modal-header { padding: 16px 22px; border-bottom: 1px solid var(--ad-border); }
+.modal-overlay .modal-title { font-size: 17px; font-weight: 700; color: var(--ad-text); }
+.modal-overlay .modal-footer { padding: 14px 22px; border-top: 1px solid var(--ad-border); background: #FAFBFD; border-radius: 0 0 16px 16px; }
+.modal-overlay .modal-close-btn { width: 34px; height: 34px; border-radius: 8px; display: grid; place-items: center; }
+.modal-overlay .modal-close-btn:hover { background: #F1F4F8; color: var(--ad-text); }
+
+/* --- Đang tải --- */
+.admin-layout .loading-spinner__icon { border-color: var(--ad-border); border-top-color: var(--ad-brand); width: 2.6rem; height: 2.6rem; border-width: 3px; }
+
+@media (max-width: 900px) {
+    .admin-layout { grid-template-columns: 72px minmax(0, 1fr); }
+    .admin-layout .sidebar .logo-text, .admin-layout .sidebar__section-title, .admin-layout .sidebar__nav-text { display: none; }
+    .admin-layout .sidebar .sidebar-header { justify-content: center; padding: 0; }
+    .admin-layout .sidebar__nav-link { justify-content: center; padding: 10px 0; }
+}

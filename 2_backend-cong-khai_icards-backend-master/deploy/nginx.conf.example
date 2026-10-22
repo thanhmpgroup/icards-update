@@ -1,0 +1,67 @@
+# Cấu hình nginx tham khảo cho iCards (đặt trong /etc/nginx/sites-available/).
+# Mục tiêu: nén gzip, ẩn phiên bản nginx, header bảo mật, chặn Google lập chỉ mục trang admin.
+# Sau khi sửa: sudo nginx -t && sudo systemctl reload nginx
+
+# ---- Đặt trong khối http { } (thường ở /etc/nginx/nginx.conf) ----
+server_tokens off;                 # không hiện "nginx/1.24.0 (Ubuntu)" trong header
+
+gzip on;
+gzip_comp_level 6;
+gzip_min_length 1024;
+gzip_proxied any;
+gzip_vary on;
+gzip_types text/plain text/css text/xml application/json application/javascript
+           application/xml application/rss+xml image/svg+xml font/woff2;
+
+# ---- Web công khai + API (Node chạy ở cổng 5000) ----
+server {
+    listen 443 ssl http2;
+    server_name icards.com.vn www.icards.com.vn api.icards.com.vn;
+
+    # ssl_certificate ... (giữ nguyên cấu hình chứng chỉ hiện có)
+
+    client_max_body_size 50m;
+
+    location / {
+        proxy_pass http://127.0.0.1:5000;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+
+# ---- Trang quản trị (React build tĩnh) ----
+server {
+    listen 443 ssl http2;
+    server_name admin.icards.com.vn;
+
+    # ssl_certificate ... (giữ nguyên cấu hình chứng chỉ hiện có)
+
+    root /home/icards/admin/build;   # sửa lại đúng thư mục build của admin
+    index index.html;
+
+    # Không cho Google lập chỉ mục trang admin
+    add_header X-Robots-Tag "noindex, nofollow" always;
+    add_header Strict-Transport-Security "max-age=31536000" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header X-Frame-Options "SAMEORIGIN" always;
+    add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+
+    location = /robots.txt {
+        default_type text/plain;
+        return 200 "User-agent: *\nDisallow: /\n";
+    }
+
+    # File JS/CSS có mã hash trong tên -> cache 1 năm
+    location /static/ {
+        expires 1y;
+        add_header Cache-Control "public, immutable";
+        add_header X-Robots-Tag "noindex, nofollow" always;
+    }
+
+    location / {
+        try_files $uri /index.html;
+    }
+}

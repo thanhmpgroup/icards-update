@@ -1,0 +1,51 @@
+const cron = require('node-cron');
+const moment = require('moment');
+const Invitation = require('../models/invitation.model');
+const { sendInvitationEmailToGuest } = require('../services/invitation.service');
+
+// Chạy lúc 08:00 sáng mỗi ngày theo giờ Việt Nam (máy chủ thường chạy giờ UTC)
+cron.schedule('0 8 * * *', async () => {
+    console.log('[CRON] Bắt đầu chạy tiến trình quét email nhắc nhở...');
+    try {
+        const today = moment().utcOffset(7 * 60).startOf('day');
+
+        // Tìm tất cả thiệp mời có eventDate và mảng emailReminders không rỗng
+        const invitations = await Invitation.find({
+            'settings.eventDate': { $exists: true, $ne: null }, // PHẢI CÓ NGÀY SỰ KIỆN
+            'settings.emailReminders': { $exists: true, $not: { $size: 0 } } // PHẢI CÓ LỊCH NHẮC NHỞ
+        });
+
+        let emailsSentCount = 0;
+
+        for (const invitation of invitations) {
+            const eventDate = moment(invitation.settings.eventDate).utcOffset(7 * 60).startOf('day');
+
+            // Tính số ngày còn lại đến sự kiện
+            const daysUntilEvent = eventDate.diff(today, 'days');
+
+            // Kiểm tra xem có cấu hình nhắc nhở nào khớp với số ngày hiện tại và đang bật không
+            const matchingReminder = invitation.settings.emailReminders.find(
+                reminder => reminder.daysBefore === daysUntilEvent && reminder.isEnabled
+            );
+
+            if (matchingReminder) {
+                // Chỉ nhắc những khách chưa từ chối và có email
+                const guestsToRemind = invitation.guests.filter(
+                    guest => guest.status !== 'declined' && guest.email
+                );
+
+                for (const guest of guestsToRemind) {
+                    try {
+                        await sendInvitationEmailToGuest(invitation._id, guest._id, invitation.user, { daysLeft: daysUntilEvent });
+                        emailsSentCount++;
+                    } catch (err) {
+                        console.error(`[CRON] Lỗi gửi email cho guest ${guest.email}:`, err.message);
+                    }
+                }
+            }
+        }
+        console.log(`[CRON] Hoàn thành. Đã gửi ${emailsSentCount} email nhắc nhở.`);
+    } catch (error) {
+        console.error('[CRON] Lỗi tiến trình quét email:', error);
+    }
+}, { timezone: 'Asia/Ho_Chi_Minh' });

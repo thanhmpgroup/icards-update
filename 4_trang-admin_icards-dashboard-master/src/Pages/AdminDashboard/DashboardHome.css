@@ -1,0 +1,152 @@
+/* Bảng điều khiển (DashboardHome.js). Dùng biến màu của AdminTheme.css. */
+.dh { display: grid; gap: 20px; max-width: 1480px; margin: 0 auto; transition: opacity .2s; }
+.dh--refreshing { opacity: .65; }
+
+.dh-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px 20px; }
+.dh-title { margin: 0; font-size: 26px; line-height: 1.2; font-weight: 700; color: var(--ad-text); letter-spacing: -.01em; }
+.dh-sub { margin: 4px 0 0; font-size: 13px; color: var(--ad-muted); }
+.dh-head__actions { display: flex; align-items: center; gap: 8px; }
+.dh-range { display: inline-flex; padding: 3px; border-radius: 10px; background: var(--ad-surface); border: 1px solid var(--ad-border); }
+.dh-range button { border: 0; background: transparent; padding: 7px 14px; border-radius: 7px; font: 500 13px/1 inherit; color: var(--ad-muted); cursor: pointer; }
+.dh-range button[aria-pressed="true"] { background: var(--ad-brand); color: #fff; }
+.dh-icon-btn { width: 38px; height: 38px; display: grid; place-items: center; border-radius: 10px; border: 1px solid var(--ad-border); background: var(--ad-surface); color: var(--ad-text); cursor: pointer; }
+.dh-icon-btn:hover { border-color: var(--ad-brand); color: var(--ad-brand); }
+.dh-spin { animation: dh-spin .9s linear infinite; }
+@keyframes dh-spin { to { transform: rotate(360deg); } }
+
+/* --- KPI --- */
+.dh-kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+.dh-kpi { display: grid; align-content: start; gap: 8px; padding: 18px 18px 16px; background: var(--ad-surface); border: 1px solid var(--ad-border); border-radius: 14px; min-width: 0; }
+.dh-kpi__head { display: flex; align-items: center; gap: 10px; }
+.dh-kpi__icon { width: 34px; height: 34px; display: grid; place-items: center; border-radius: 10px; flex-shrink: 0; }
+.dh-kpi__label { font-size: 13px; font-weight: 600; color: var(--ad-muted); }
+.dh-kpi__value { margin: 2px 0 0; font-size: 30px; line-height: 1.1; font-weight: 700; color: var(--ad-text); font-variant-numeric: tabular-nums; letter-spacing: -.01em; }
+.dh-kpi__value small { font-size: 16px; font-weight: 500; color: var(--ad-muted); }
+.dh-kpi__foot { margin: 0; font-size: 12.5px; line-height: 1.5; color: var(--ad-muted); }
+.dh-tone--brand { background: var(--ad-brand-50); color: var(--ad-brand); }
+.dh-tone--gold { background: #FBF0DF; color: #A86A12; }
+.dh-tone--teal { background: #E2F3EF; color: #1C7A66; }
+.dh-tone--rose { background: #FBE7EA; color: #B23A55; }
+
+.dh-delta { display: inline-flex; align-items: center; gap: 3px; width: fit-content; padding: 2px 8px; border-radius: 999px; font-size: 12px; font-weight: 600; }
+.dh-delta--up { background: #E3F4EA; color: #1B7A47; }
+.dh-delta--down { background: #FCE8E6; color: #B4372C; }
+.dh-delta--flat { background: #EEF1F5; color: var(--ad-muted); font-weight: 500; }
+.dh-bar, .dh-stack { height: 6px; border-radius: 999px; background: #E9EDF3; overflow: hidden; display: flex; }
+.dh-bar span { background: #1C7A66; border-radius: 999px; }
+.dh-stack__yes { background: #1B8A55; }
+.dh-stack__no { background: #E07A6F; }
+
+/* --- Chỉ số phụ --- */
+.dh-minis { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 12px; }
+.dh-mini { display: flex; align-items: center; gap: 10px; padding: 12px 14px; background: var(--ad-surface); border: 1px solid var(--ad-border); border-radius: 12px; min-width: 0; color: inherit; text-decoration: none; }
+.dh-mini--link:hover { border-color: var(--ad-brand); }
+.dh-mini__icon { width: 30px; height: 30px; display: grid; place-items: center; border-radius: 8px; background: #F1F4F8; color: var(--ad-brand); flex-shrink: 0; }
+.dh-mini__text { display: grid; min-width: 0; line-height: 1.3; }
+.dh-mini__text b { font-size: 16px; font-weight: 700; color: var(--ad-text); font-variant-numeric: tabular-nums; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.dh-mini__text small { font-size: 12px; color: var(--ad-muted); }
+.dh-mini__text em { font-style: normal; font-size: 11.5px; font-weight: 600; color: #A86A12; }
+
+/* --- Khung nội dung --- */
+.dh-grid { display: grid; gap: 16px; align-items: start; }
+.dh-grid--main { grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); }
+.dh-grid--three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.dh-panel { background: var(--ad-surface); border: 1px solid var(--ad-border); border-radius: 14px; padding: 18px 18px 16px; min-width: 0; }
+.dh-panel__head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+.dh-panel__head h2 { margin: 0; font-size: 15.5px; font-weight: 700; color: var(--ad-text); }
+.dh-panel__head p { margin: 3px 0 0; font-size: 12.5px; color: var(--ad-muted); }
+.dh-link { font-size: 13px; font-weight: 600; color: var(--ad-brand); text-decoration: none; white-space: nowrap; }
+.dh-link:hover { text-decoration: underline; }
+.dh-chart { height: 300px; }
+.dh-panel--chart { align-self: stretch; }
+.dh-empty { margin: 0; padding: 24px 8px; text-align: center; font-size: 13px; color: var(--ad-muted); }
+.dh-muted { color: var(--ad-muted); font-size: 12.5px; white-space: nowrap; }
+
+.dh-tooltip { display: grid; gap: 4px; padding: 10px 12px; background: #fff; border: 1px solid var(--ad-border); border-radius: 10px; box-shadow: 0 10px 24px rgba(20, 35, 60, .12); font-size: 12.5px; }
+.dh-tooltip b { font-size: 12px; color: var(--ad-muted); }
+.dh-tooltip span { display: flex; align-items: center; gap: 6px; }
+.dh-tooltip i { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+
+/* --- Việc cần xử lý --- */
+.dh-todos { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.dh-todos li { display: grid; grid-template-columns: 20px minmax(0, 1fr) auto; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 10px; font-size: 13.5px; line-height: 1.45; }
+.dh-todos li.is-open { background: #FFF6E8; color: #6D4A10; }
+.dh-todos li.is-open svg { color: #C27A12; }
+.dh-todos li.is-done { background: #F2F8F4; color: #3F5E4B; }
+.dh-todos li.is-done svg { color: #2E9461; }
+.dh-todos li.is-info { grid-template-columns: 20px minmax(0, 1fr); background: #F1F5FB; color: #3A4A63; font-size: 12.5px; }
+.dh-todos li.is-info svg { color: var(--ad-brand); align-self: start; margin-top: 1px; }
+.dh-todos__go { font-size: 12.5px; font-weight: 600; color: #fff; background: #C27A12; padding: 5px 10px; border-radius: 7px; text-decoration: none; }
+.dh-todos__go:hover { background: #A5660C; }
+
+/* --- Bảng xếp hạng mẫu --- */
+.dh-rank { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.dh-rank li { display: grid; grid-template-columns: 18px 40px minmax(0, 1fr) auto; align-items: center; gap: 10px; }
+.dh-rank__no { font-size: 12px; font-weight: 700; color: var(--ad-muted); text-align: center; font-variant-numeric: tabular-nums; }
+.dh-thumb { width: 40px; height: 40px; border-radius: 8px; overflow: hidden; background: #EEF2F7; display: grid; place-items: center; color: var(--ad-muted); flex-shrink: 0; }
+.dh-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.dh-rank__main { display: grid; gap: 6px; min-width: 0; }
+.dh-rank__main b { font-size: 13.5px; font-weight: 600; color: var(--ad-text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.dh-rank__meter { height: 5px; border-radius: 999px; background: #EDF1F6; overflow: hidden; }
+.dh-rank__meter span { display: block; height: 100%; background: var(--ad-brand); border-radius: 999px; }
+.dh-rank__meter--gold span { background: #D9932E; }
+.dh-rank__num { display: grid; justify-items: end; font-size: 15px; font-weight: 700; color: var(--ad-text); font-variant-numeric: tabular-nums; line-height: 1.15; }
+.dh-rank__num small { font-size: 11px; font-weight: 500; color: var(--ad-muted); }
+
+/* --- Bảng thiệp mới --- */
+.dh-table-wrap { overflow-x: auto; margin: 0 -4px; }
+.dh-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+.dh-table th { text-align: left; font-size: 11.5px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--ad-muted); padding: 8px 10px; border-bottom: 1px solid var(--ad-border); white-space: nowrap; }
+.dh-table td { padding: 9px 10px; border-bottom: 1px solid #EEF1F5; color: var(--ad-text); vertical-align: middle; }
+.dh-table tr:last-child td { border-bottom: 0; }
+.dh-table .num { text-align: right; font-variant-numeric: tabular-nums; }
+.dh-cell-tpl { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.dh-cell-tpl .dh-thumb { width: 34px; height: 34px; }
+.dh-cell-tpl span:last-child { max-width: 280px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 500; }
+
+/* --- Khách hàng mới --- */
+.dh-people { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+.dh-people li { display: grid; grid-template-columns: 34px minmax(0, 1fr) auto; align-items: center; gap: 10px; padding: 7px 0; border-bottom: 1px solid #EEF1F5; }
+.dh-people li:last-child { border-bottom: 0; }
+.dh-people__avatar { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; background: var(--ad-brand-50); color: var(--ad-brand); font-weight: 700; font-size: 13px; }
+.dh-people__main { display: grid; min-width: 0; line-height: 1.3; }
+.dh-people__main b { font-size: 13.5px; font-weight: 600; color: var(--ad-text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.dh-people__main small { font-size: 12px; color: var(--ad-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* --- Công cụ --- */
+.dh-tools__grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); gap: 24px; }
+.dh-tools__title { margin: 0 0 10px; font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--ad-muted); }
+.dh-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.dh-action { display: flex; align-items: center; gap: 10px; padding: 11px 12px; border-radius: 10px; border: 1px solid var(--ad-border); color: var(--ad-text); text-decoration: none; font-size: 13.5px; font-weight: 500; transition: border-color .15s, background .15s; }
+.dh-action svg { color: var(--ad-brand); flex-shrink: 0; }
+.dh-action:hover { border-color: var(--ad-brand); background: var(--ad-brand-50); }
+.dh-ext { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.dh-ext__item { display: grid; grid-template-columns: 18px minmax(0, 1fr) 14px; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 10px; background: #F6F8FB; color: var(--ad-text); text-decoration: none; transition: background .15s; }
+.dh-ext__item:hover { background: var(--ad-brand-50); }
+.dh-ext__item > svg:first-child { color: var(--ad-brand); }
+.dh-ext__item span { display: grid; min-width: 0; line-height: 1.3; }
+.dh-ext__item b { font-size: 13.5px; font-weight: 600; }
+.dh-ext__item small { font-size: 12px; color: var(--ad-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.dh-ext__arrow { color: var(--ad-muted); }
+
+/* --- Lỗi, đang tải --- */
+.dh-error { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding: 16px 18px; border-radius: 12px; background: #FDECEA; color: #8C2A21; font-size: 14px; }
+.dh-error--inline { padding: 10px 14px; font-size: 13px; }
+.dh-skeleton { min-height: 132px; background: linear-gradient(90deg, #EEF1F5 0%, #F7F9FB 50%, #EEF1F5 100%); background-size: 200% 100%; animation: dh-shimmer 1.2s ease-in-out infinite; border-color: transparent; }
+.dh-skeleton--tall { min-height: 340px; }
+@keyframes dh-shimmer { to { background-position: -200% 0; } }
+
+@media (max-width: 1280px) {
+    .dh-minis { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .dh-grid--three { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .dh-grid--three > :last-child { grid-column: span 2; }
+}
+@media (max-width: 1080px) {
+    .dh-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .dh-grid--main, .dh-tools__grid { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 680px) {
+    .dh-kpis, .dh-minis, .dh-grid--three, .dh-actions, .dh-ext { grid-template-columns: minmax(0, 1fr); }
+    .dh-grid--three > :last-child { grid-column: auto; }
+}
+@media (prefers-reduced-motion: reduce) { .dh-spin, .dh-skeleton { animation: none; } }

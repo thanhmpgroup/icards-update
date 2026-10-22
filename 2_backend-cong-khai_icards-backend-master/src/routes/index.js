@@ -1,0 +1,36 @@
+const express = require('express');
+const router = express.Router();
+
+const authRoutes = require('./auth.routes');
+const aiRoutes = require('./ai.routes');
+const userRoutes = require('./user.routes');
+const productRoutes = require('./product.routes');
+const invitationRoutes = require('./invitation.routes');
+const invitationTemplateRoutes = require('./invitationTemplate.routes');
+const designAssetRoutes = require('./designAsset.routes');
+const pageRoutes = require('./page.routes');
+const masterGuestRoutes = require('./masterGuest.routes.js');
+const fontRoutes = require('./font.routes');
+const pageCategoryRoutes = require('./pageCategory.routes');
+const publicRoutes = require('./public.routes');
+const mapRoutes = require('./map.routes'); 
+const wishRoutes = require('./wish.routes');
+const templateBlockRoutes = require('./templateBlock.routes'); // Import route cho template blocks
+const reviewRoutes = require('./review.routes');
+router.use('/wishes', wishRoutes);
+router.use('/auth', authRoutes);
+router.use('/ai', aiRoutes);
+router.use('/users', userRoutes);
+router.use('/products', productRoutes);
+router.use('/invitations', invitationRoutes);
+router.use('/invitation-templates', invitationTemplateRoutes);
+router.use('/design-assets', designAssetRoutes);
+router.use('/pages', pageRoutes);
+router.use('/master-guests', masterGuestRoutes);
+router.use('/fonts', fontRoutes);
+router.use('/page-categories', pageCategoryRoutes);
+router.use('/public', publicRoutes);
+router.use('/template-blocks', templateBlockRoutes); // Thêm route cho template blocks vào router công khai
+router.use('/maps', mapRoutes);
+router.use('/reviews', reviewRoutes);
+module.exports = router;
